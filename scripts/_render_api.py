@@ -548,7 +548,11 @@ def write_api_markdown(data_dict, api_path, address_dict, debug=False):
         # check if file has changed, if not don't write
         if path.exists() and sha_256(path) == sha_256(markdown):
             continue
-        path.write_text(markdown)
+        try:
+            with path.open('w', encoding='utf-8') as file:
+                file.write(markdown)
+        except:
+            breakpoint()
     # remove files that are no longer writen. This can happen when the code is
     # refactored or objects are deleted.
     for path in files_to_delete:
